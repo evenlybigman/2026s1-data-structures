@@ -3,5 +3,5 @@
     <Platform Name="x64" />
     <Platform Name="x86" />
   </Configurations>
-  <Project Path="week06_Stack_InfixToPostfix_Converter.vcxproj" Id="701771d3-73cd-4d6c-bbb3-0e8c2a76a8fe" />
+  <Project Path="Stack_InfixToPostfix_Converter.vcxproj" />
 </Solution>

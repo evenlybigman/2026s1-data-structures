@@ -3,5 +3,5 @@
     <Platform Name="x64" />
     <Platform Name="x86" />
   </Configurations>
-  <Project Path="week07_queue.vcxproj" />
+  <Project Path="Recursive_Function.vcxproj" />
 </Solution>

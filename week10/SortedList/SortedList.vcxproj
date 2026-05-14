@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>18.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{377ad0a8-8010-4fa0-8472-23e2a6f8f2d2}</ProjectGuid>
-    <RootNamespace>SortedList</RootNamespace>
+    <ProjectGuid>{a5d14ad4-dfac-4cef-ae14-ee6eda2495d0}</ProjectGuid>
+    <RootNamespace>sortedlist</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />

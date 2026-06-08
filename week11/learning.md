@@ -128,3 +128,239 @@ int main() {
 }
 ```
 
+### 이진 트리의 순회
+
+순회란 트리의 노드들을 체계적으로 방문하는 것을 말한다.
+
+### 순회 방법
+
+순회는 필요에 따라 다양한 방문 순서가 있다.
+
+먼저 3가지는 루트를 방문하는 순서에 대한 방법이다.
+
+### 전위 순회
+
+루트를 제일 먼저 방문하는 방법이다.
+
+루트 -> 왼쪽 서브 트리 -> 오른쪽 서브 트리
+
+### 전위 순회 응용
+
+구조화된 문서 출력
+
+### 중위 순회
+
+루트를 중간으로 방문하는 방법이다.
+
+왼쪽 서브 트리 -> 루트 -> 오른쪽 서브 트리
+
+### 중위 순회 응용
+
+수식 트리
+
+### 후위 순회
+
+루트를 가장 마지막에 방문하는 방법이다.
+
+왼쪽 서브 트리 -> 오른쪽 서브 트리 -> 루트
+
+### 후위 순회 응용
+
+디렉토리 용량 계산
+
+### 트리 순회 구현
+
+C언어로 순회를 구현하는 방법이다.
+
+첫 번째는 재귀 호출을 이용하는 방법이 있다.
+
+### 재귀 호출 / 전위 순회
+
+```c
+void preorder(TreeNode* root) {
+	if (root) {
+		printf("[%d] ", root->data);
+		preorder(root->left);
+		preorder(root->right);
+	}
+}
+```
+
+### 재귀 호출 / 중위 순회
+
+```c
+void inorder(TreeNode* root) {
+	if (root) {
+		inorder(root->left);
+		printf("[%d] ", root->data);
+		inorder(root->right);
+	}
+}
+```
+
+### 재귀 호출 / 후위 순회
+
+```c
+void postorder(TreeNode* root) {
+	if (root) {
+		postorder(root->left);
+		postorder(root->right);
+		printf("[%d] ", root->data);
+	}
+}
+```
+
+### 반복적인 순회
+
+반복을 이용해서도 순회를 구현할 수 있다.
+
+다음은 스택을 이용해 중위 순회를 구현한 것이다.
+
+```c
+#include <stdio.h>
+
+typedef int element;
+
+typedef struct TreeNode {
+	element data;
+	struct treeNode* left, * right;
+}TreeNode;
+
+//       15
+//     4  20
+//   1  16  25
+
+TreeNode n1 = { 1, NULL, NULL };
+TreeNode n2 = { 4,  &n1, NULL };
+TreeNode n3 = { 16, NULL, NULL };
+TreeNode n4 = { 25, NULL, NULL };
+TreeNode n5 = { 20,  &n3,  &n4 };
+TreeNode n6 = { 15,  &n2,  &n5 };
+TreeNode* root = &n6;
+
+#define SIZE 100
+int top = -1;
+TreeNode* stack[SIZE];
+
+void push(TreeNode* p) {
+	if (top < SIZE - 1) {
+		stack[++top] = p;
+	}
+}
+
+TreeNode* pop() {
+	if (top > -1) {
+		return stack[top--];
+	}
+}
+
+void inorder_iter(TreeNode* root) {
+	while (1) {
+		for (; root; root = root->left) {
+			push(root);
+		}
+		root = pop();
+		if (!root) break;
+		printf("[%d] ", root->data);
+		root = root->right;
+	}
+}
+
+int main() {
+	printf("중위 순회= ");
+	inorder_iter(root);
+	printf("\n");
+}
+```
+
+### 레벨 순회
+
+레벨 순회는 레벨 순서대로 순회하는 것이다.
+
+왼쪽에서 오른쪽을 순회한다. 큐를 이용해서 구현할 수 있다.
+
+```c
+#include <stdio.h>
+
+typedef int element;
+
+typedef struct TreeNode {
+	element data;
+	struct TreeNode* left, * right;
+}TreeNode;
+
+//       15
+//     4  20
+//   1  16  25
+
+TreeNode n1 = { 1, NULL, NULL };
+TreeNode n2 = { 4,  &n1, NULL };
+TreeNode n3 = { 16, NULL, NULL };
+TreeNode n4 = { 25, NULL, NULL };
+TreeNode n5 = { 20,  &n3,  &n4 };
+TreeNode n6 = { 15,  &n2,  &n5 };
+TreeNode* root = &n6;
+
+#define SIZE 100
+
+typedef struct {
+	TreeNode* data[SIZE];
+	int front, rear;
+}QueueType;
+
+void init(QueueType* q) {
+	q->front = 0;
+	q->rear = 0;
+}
+
+int is_full(QueueType* q) {
+	return ((q->rear + 1) % SIZE == q->front);
+}
+
+int is_empty(QueueType* q) {
+	return (q->front == q->rear);
+}
+
+void enqueue(QueueType* q,TreeNode* root) {
+	if (is_full(q)) return;
+	q->rear = (q->rear + 1) % SIZE;
+	q->data[q->rear] = root;
+}
+
+TreeNode* dequeue(QueueType* q) {
+	if (is_empty(q)) return;
+	q->front = (q->front + 1) % SIZE;
+	return q->data[q->front];
+}
+
+level_order(TreeNode* root) {
+	QueueType q;
+
+	init(&q);
+
+	if (root == NULL) return;
+	enqueue(&q, root);
+
+	while (!is_empty(&q)) {
+		root = dequeue(&q);
+		printf("[%d] ", root->data);
+		if (root->left)
+			enqueue(&q, root->left);
+		if (root->right)
+			enqueue(&q, root->right);
+	}
+}
+
+int main() {
+	printf("레벨 순회= ");
+	level_order(root);
+	printf("\n");
+}
+```
+
+
+
+
+
+
+

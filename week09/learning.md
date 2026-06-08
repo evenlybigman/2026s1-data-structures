@@ -259,9 +259,69 @@ void print_list(ListNode* head) {
 	}
 	printf("\n");
 }
+
+
 ```
 
+## 실습
 
+### 1. search 함수
 
+```c
+ListNode* search(ListNode* head, element x) {
+    ListNode* curr = head;
+    while(curr != NULL) {
+        if (curr->data == x) return curr;
+        curr = curr->link;
+    }
+    return NULL;
+}
+```
 
+못 찾았을 경우 NULL 반환
+
+### 2. reverse 함수
+
+```c
+ListNode* reverse(ListNode* head) {
+    ListNode *prev, *curr, *next;
+    prev = NULL;
+    curr = head;
+    next = NULL;
+    
+    while(curr != NULL) {
+        next = curr->link;
+        curr->link = prev;
+        prev = curr;
+        curr = next;
+    }
+    
+    return prev;
+}
+```
+
+모든 노드의 링크를 next에서 prev로 바꿔주면 된다. 그럼 prev가 헤드가 되니 prev를 리턴한다.
+
+### 3. sumList 함수
+
+```c
+ListNode* sumList(ListNode* head1, ListNode* head2) {
+    if (head1 == NULL) return head2;
+    else if (head2 == NULL) return head1;
+    else {
+        ListNode * head;
+        head = head1;
+        
+        while( head1->link != NULL) {
+            head1 = head1->link;
+        }
+        
+        head1->link = head2;
+        
+        return head;
+    }
+}
+```
+
+head1을 바꾸든 head를 바꾸던 똑같다. 여기서는 head1을 바꿨음 어차피 값에 의한 호출이라 실제 head1은 바뀌지 않음.
 

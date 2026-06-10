@@ -157,3 +157,101 @@ int main() {
 
 ### 히프 정렬
 
+히프 삽입을 하고 배열 뒤에서부터 빼면 최대값부터 나오므로 정렬이 된다.
+
+시간복잡도는 log n 인 삽입과 삭제를 리스트 개수인 n번하니 2n log n이 되고 빅오표기법으로 O(n logn)이 된다.
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#define MAX_ELEMENT 200
+
+typedef struct element {
+	int key;
+}element;
+
+typedef struct HeapType {
+	element heap[MAX_ELEMENT];
+	int heap_size;
+}HeapType;
+
+HeapType* create() {
+	return (HeapType*)malloc(sizeof(HeapType));
+}
+
+void init(HeapType* heap) {
+	heap->heap_size = 0;
+}
+
+void insert_max_heap(HeapType* heap, element item) {
+	int i;
+	i = ++(heap->heap_size);
+
+	while (i != 1 && (item.key > heap->heap[i / 2].key)) {
+		heap->heap[i] = heap->heap[i / 2];
+		i = i / 2;
+	}
+	heap->heap[i] = item;
+}
+
+element delete_max_heap(HeapType* heap) {
+
+	int parent, child;
+	element item, temp;
+
+	//반환용 데이터 저장
+	item = heap->heap[1];
+	temp = heap->heap[(heap->heap_size)--];
+
+	parent = 1;
+	child = 2;
+
+	while (child <= heap->heap_size) {
+
+		if ((child < heap->heap_size) &&
+			(heap->heap[child].key) < heap->heap[child + 1].key)
+			child++;
+
+		if (temp.key >= heap->heap[child].key)
+			break;
+
+		heap->heap[parent] = heap->heap[child];
+		parent = child;
+		child *= 2;
+	}
+
+	heap->heap[parent] = temp;
+	return item;
+}
+
+void heap_sort(element a[], int n) {
+	int i;
+
+	HeapType* h;
+
+	h = create();
+	init(h);
+
+	for (int i = 0; i < n; i++) {
+		insert_max_heap(h, a[i]);
+	}
+
+	for (int i = (n - 1); i >= 0; i--) {
+		a[i] = delete_max_heap(h);
+	}
+
+	free(h);
+}
+
+int main() {
+	element list[8] = { 23, 56, 11, 9, 56, 99, 27, 34 };
+	heap_sort(list, 8);
+	for (int i = 0; i < 8; i++) {
+		printf("%d ", list[i].key);
+	}
+
+	printf("\n");
+	return 0;
+}
+```
+

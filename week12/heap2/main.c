@@ -52,6 +52,7 @@ element delete_max_heap(HeapType* heap) {
 			break;
 
 		heap->heap[parent] = heap->heap[child];
+		parent = child;
 		child *= 2;
 	}
 
